@@ -25,5 +25,5 @@ class SetTimeFormView(FormView):
         return context
 
     def form_valid(self, form):
-        Clock.set(form.cleaned_data['current_time'])
+        Clock.set(time=form.cleaned_data['current_time'])
         return super(SetTimeFormView, self).form_valid(form)

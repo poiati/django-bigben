@@ -22,14 +22,14 @@ class Clock(object):
         return date.today()
 
     @classmethod
-    def set(cls, time):
+    def set(cls, *args, time=None):
         if not settings.BIGBEN_ENABLED:
             raise ClockError(
                     'You must be running Django in DEBUG mode to set the time')
         try:
             from .models import ClockConfig
             clockconfig = ClockConfig.objects.get()
-            clockconfig.time = time
+            clockconfig.time = time if time else datetime(*args)
             clockconfig.save()
         except ClockConfig.DoesNotExist:
             ClockConfig.objects.create(time=time)

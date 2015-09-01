@@ -28,8 +28,7 @@ class SetTimeFormViewTest(TestCase):
                 self._reverse(), 
                 {'current_time': current_time})
 
-        clock_mock.set.assert_called_with(
-                datetime.strptime(current_time, views.DATETIME_FORMAT))
+        clock_mock.set.assert_called_with(time=datetime.strptime(current_time, views.DATETIME_FORMAT))
 
     def _reverse(self):
         return reverse('set_time')

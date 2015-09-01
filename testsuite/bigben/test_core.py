@@ -27,7 +27,7 @@ class EnableClockTestCase(ClockTest):
     def test_today(self):
         expect(Clock.today()) == self.faketime.date()
 
-    def test_set_time(self):
+    def test_set_time_wth(self):
         Clock.set(time=self.faketime)
 
         expect(ClockConfig.objects.get()) != None
@@ -36,6 +36,11 @@ class EnableClockTestCase(ClockTest):
         Clock.set(time=othertime)
 
         expect(ClockConfig.objects.get()) != None
+
+    def test_set_time_with_args(self):
+        Clock.set(2020, 10, 11)
+
+        expect(ClockConfig.objects.get().time) == datetime(2020, 10, 11)
 
 
 @override_settings(BIGBEN_ENABLED=False)
