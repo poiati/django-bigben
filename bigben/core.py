@@ -2,8 +2,6 @@ from datetime import datetime, date
 
 from django.conf import settings
 
-from .models import ClockConfig
-
 
 class Clock(object):
 
@@ -29,6 +27,7 @@ class Clock(object):
             raise ClockError(
                     'You must be running Django in DEBUG mode to set the time')
         try:
+            from .models import ClockConfig
             clockconfig = ClockConfig.objects.get()
             clockconfig.time = time
             clockconfig.save()
@@ -38,6 +37,7 @@ class Clock(object):
     @classmethod
     def _get_clockconfig(cls):
         try:
+            from .models import ClockConfig
             return ClockConfig.objects.get()
         except ClockConfig.DoesNotExist:
             pass
