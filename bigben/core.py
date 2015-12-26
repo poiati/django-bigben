@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from django.utils import timezone
 
 from django.conf import settings
 
@@ -9,23 +10,19 @@ class Clock(object):
     def now(cls):
         if settings.BIGBEN_ENABLED:
             clockconfig = cls._get_clockconfig()
-            if settings.BIGBEN_ENABLED and clockconfig is not None:
+            if clockconfig is not None:
                 return clockconfig.time
-        return datetime.now()
+        return timezone.now()
 
     @classmethod
     def today(cls):
-        if settings.BIGBEN_ENABLED:
-            clockconfig = cls._get_clockconfig()
-            if clockconfig is not None:
-                return clockconfig.time.date()
-        return date.today()
+        return cls.now().date()
 
     @classmethod
     def set(cls, *args, time=None):
         if not settings.BIGBEN_ENABLED:
             raise ClockError(
-                    'You must be running Django in DEBUG mode to set the time')
+                    'Cant set the time: bigben is disabled.')
         try:
             from .models import ClockConfig
             clockconfig = ClockConfig.objects.get()
